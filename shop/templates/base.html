@@ -7,9 +7,14 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
+  <a class="skip-link" href="#content">Skip to content</a>
+
   <header class="site-header">
     <div class="wrap header-inner">
-      <a class="brand" href="{{ url_for('catalog.index') }}">Corner&nbsp;Shop</a>
+      <a class="brand" href="{{ url_for('catalog.index') }}">
+        <span class="brand-mark" aria-hidden="true">CS</span>
+        <span class="brand-name">Corner&nbsp;Shop</span>
+      </a>
       <form class="search" action="{{ url_for('catalog.index') }}" method="get" role="search">
         <input type="search" name="q" placeholder="Search products" value="{{ query or '' }}" aria-label="Search products">
         {% if active_category %}<input type="hidden" name="category" value="{{ active_category }}">{% endif %}
@@ -17,29 +22,38 @@
         {% if sort and sort != 'name' %}<input type="hidden" name="sort" value="{{ sort }}">{% endif %}
         <button type="submit">Search</button>
       </form>
-      <a class="cart-link" href="{{ url_for('cart.show') }}">
-        Cart <span class="badge">{{ cart_count() }}</span>
-      </a>
+      <nav class="site-nav" aria-label="Shop">
+        <a class="nav-link" href="{{ url_for('catalog.index') }}">Catalog</a>
+        <a class="cart-link" href="{{ url_for('cart.show') }}">
+          Cart <span class="badge">{{ cart_count() }}</span>
+        </a>
+      </nav>
     </div>
   </header>
 
-  <main class="wrap">
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        <ul class="flashes">
-          {% for category, message in messages %}
-            <li class="flash flash-{{ category }}">{{ message }}</li>
-          {% endfor %}
-        </ul>
-      {% endif %}
-    {% endwith %}
+  <main class="site-main" id="content">
+    <div class="wrap">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <ul class="flashes">
+            {% for category, message in messages %}
+              <li class="flash flash-{{ category }}">{{ message }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      {% endwith %}
 
-    {% block content %}{% endblock %}
+      {% block content %}{% endblock %}
+    </div>
   </main>
 
   <footer class="site-footer">
-    <div class="wrap">
-      <p>Corner Shop is a demo storefront. No orders are actually fulfilled.</p>
+    <div class="wrap footer-inner">
+      <p class="footer-note">Corner Shop is a demo storefront. No orders are actually fulfilled.</p>
+      <nav class="footer-nav" aria-label="Footer">
+        <a href="{{ url_for('catalog.index') }}">Catalog</a>
+        <a href="{{ url_for('cart.show') }}">Cart</a>
+      </nav>
     </div>
   </footer>
 
