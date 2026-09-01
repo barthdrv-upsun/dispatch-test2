@@ -47,8 +47,10 @@
           <li class="card">
             <a href="{{ url_for('catalog.product', slug=item['slug']) }}">
               <span class="thumb" aria-hidden="true">{{ item['image'] }}</span>
-              <h3>{{ item['name'] }}</h3>
-              <p class="price">{{ money(item['price_cents']) }}</p>
+              <div class="card-body">
+                <h3>{{ item['name'] }}</h3>
+                <p class="price">{{ money(item['price_cents']) }}</p>
+              </div>
             </a>
           </li>
         {% endfor %}

@@ -56,6 +56,34 @@ shop/
 tests/
 ```
 
+## Layout and styling
+
+`templates/base.html` is the only layout, and every page extends it, so the
+shell is defined once:
+
+```
+skip link  →  header.site-header (sticky: brand · form.search · nav.site-nav)
+           →  main.site-main > .wrap (flash messages, then {% block content %})
+           →  footer.site-footer (.footer-note · nav.footer-nav)
+```
+
+`.wrap` is the shared centred column (`--max-width`, `margin-inline: auto`).
+The catalog page stacks a `.hero` panel, a `.toolbar` holding the three filter
+controls (categories, origins, sort), and a `ul.grid` of `li.card` products;
+the grid uses `repeat(auto-fit, minmax(min(100%, 18rem), 1fr))`, so it reflows
+from one to four columns with no breakpoints of its own.
+
+All colours, spacing, radii, shadows, fonts and the page measure live as CSS
+custom properties in the `:root` block at the top of `static/css/style.css`
+(`--bg`, `--surface`, `--text`, `--text-muted`, `--accent`, `--border`,
+`--radius`, `--shadow`, `--space-1`…`--space-6`, `--font-sans`,
+`--font-display`, `--max-width`). Rules read those tokens rather than literal
+values, so retuning the look means editing that one block. A
+`@media (prefers-color-scheme: dark)` block at the bottom of the file
+re-declares only the colour tokens, which is the whole of dark mode. Older
+token names (`--ink`, `--muted`, `--line`, `--paper`, `--card`) are kept as
+aliases of the new ones.
+
 ## Routes
 
 | Method | Path | Purpose |
