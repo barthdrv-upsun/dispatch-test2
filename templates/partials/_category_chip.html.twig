@@ -1,0 +1,28 @@
+{# Category chip linking to the category listing page.
+   Expects `category` (name as authored) and `slug`.
+   Optional `variant`: 'dot' (coloured dot + slate label, default) or
+   'accent' (label tinted with the category colour). #}
+{% set variant = variant|default('dot') %}
+
+{% if variant == 'accent' %}
+    {% set tone = {
+        'AI Engineering': 'text-brand-violet',
+        'Platform Engineering': 'text-brand-blue',
+        'Cloud Economics': 'text-[#9bb800]',
+        'Architecture': 'text-brand-pink',
+    }[category]|default('text-slatey-500') ~ ' hover:underline' %}
+{% else %}
+    {% set dot = {
+        'AI Engineering': 'bg-brand-violet',
+        'Platform Engineering': 'bg-brand-blue',
+        'Cloud Economics': 'bg-brand-lime',
+        'Architecture': 'bg-brand-pink',
+    }[category]|default('bg-slatey-400') %}
+    {% set tone = 'text-slatey-600 hover:text-ink-950' %}
+{% endif %}
+
+<a href="{{ path('category', { slug: slug }) }}"
+   class="relative z-10 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wide transition-colors {{ tone }}">
+    {% if variant != 'accent' %}<span class="h-2 w-2 rounded-full {{ dot }}"></span>{% endif %}
+    {{ category }}
+</a>
