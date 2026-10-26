@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Example Blog — Cloud infrastructure & AI{% endblock %}
+
+{% block body %}
+    {# ── Hero ─────────────────────────────────────────────────────── #}
+    <section class="relative overflow-hidden bg-hero-glow">
+        <div class="absolute inset-0 bg-[radial-gradient(60%_60%_at_80%_-10%,rgba(0,80,255,0.18),transparent_60%)]"></div>
+        <div class="relative mx-auto max-w-6xl px-5 pb-20 pt-8">
+            <div class="text-white">
+                {% include 'partials/_logo.html.twig' %}
+            </div>
+
+            <h1 class="mt-14 max-w-3xl font-display text-4xl font-bold leading-[1.05] tracking-tight text-white sm:text-6xl">
+                Field notes on <span class="text-brand-lime">cloud infrastructure</span> and <span class="text-brand-blue">AI</span>.
+            </h1>
+            <p class="mt-5 max-w-xl text-lg leading-relaxed text-white/60">
+                Practical writing on shipping software — platform engineering,
+                resilient systems, and the AI agents reshaping how teams deliver.
+            </p>
+        </div>
+    </section>
+
+    {# ── Featured ─────────────────────────────────────────────────── #}
+    {% if featured %}
+        <section class="relative z-10 mx-auto -mt-10 max-w-6xl px-5">
+            {# Stretched-link container instead of one wrapping anchor, so the
+               category chip can be its own link without nesting anchors. #}
+            <div class="group relative rounded-3xl border border-slatey-200 bg-white p-8 shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:border-slatey-300 hover:shadow-card-hover sm:p-10">
+                <div class="flex flex-wrap items-center gap-3">
+                    <span class="tag tag-accent">
+                        <span class="h-1.5 w-1.5 rounded-full bg-brand-lime"></span>
+                        Featured
+                    </span>
+                    {% include 'partials/_category_chip.html.twig' with { category: featured.category, slug: featured.categorySlug, variant: 'accent' } only %}
+                    <span class="text-xs text-slatey-400">{{ featured.readingTime }} min read</span>
+                </div>
+
+                <h2 class="mt-5 max-w-3xl font-display text-3xl font-bold leading-tight tracking-tight text-ink-950 group-hover:text-brand-blue sm:text-4xl">
+                    <a href="{{ path('article', { slug: featured.slug }) }}">
+                        {# Overlay stretching the article link across the whole block. #}
+                        <span class="absolute inset-0"></span>
+                        {{ featured.title }}
+                    </a>
+                </h2>
+                <p class="mt-4 max-w-2xl text-base leading-relaxed text-slatey-500">{{ featured.description }}</p>
+
+                <div class="mt-7 flex items-center gap-3 border-t border-slatey-100 pt-6">
+                    <span class="flex h-9 w-9 items-center justify-center rounded-full bg-ink-950 text-xs font-semibold text-white">{{ featured.authorInitials }}</span>
+                    <div class="text-sm leading-tight">
+                        <p class="font-medium text-ink-950">{{ featured.author }}{% if featured.role %}<span class="text-slatey-400"> · {{ featured.role }}</span>{% endif %}</p>
+                        <p class="text-slatey-400">{{ featured.date|date('M j, Y') }}</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    {% endif %}
+
+    {# ── All articles ─────────────────────────────────────────────── #}
+    <section id="categories" class="mx-auto max-w-6xl px-5 pt-16">
+        <div class="flex items-end justify-between border-b border-slatey-200 pb-5">
+            <h2 class="font-display text-2xl font-bold tracking-tight text-ink-950">Latest articles</h2>
+            <span class="text-sm text-slatey-400">{{ articles|length }} posts</span>
+        </div>
+
+        <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {% for article in articles %}
+                {% include 'partials/_article_card.html.twig' %}
+            {% endfor %}
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,30 @@
+{# Renders one article preview card. Expects `article`. #}
+{# The card is a stretched-link container rather than one wrapping anchor, so
+   the category chip can be its own link without nesting anchors. #}
+<div class="group relative flex flex-col rounded-2xl border border-slatey-200 bg-white p-6 shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:border-slatey-300 hover:shadow-card-hover">
+    <div class="mb-4 flex items-center justify-between">
+        {% include 'partials/_category_chip.html.twig' with { category: article.category, slug: article.categorySlug } only %}
+        <span class="text-xs text-slatey-400">{{ article.readingTime }} min read</span>
+    </div>
+
+    <h3 class="font-display text-xl font-bold leading-snug tracking-tight text-ink-950 transition-colors group-hover:text-brand-blue">
+        <a href="{{ path('article', { slug: article.slug }) }}">
+            {# Overlay stretching the article link across the whole card. #}
+            <span class="absolute inset-0"></span>
+            {{ article.title }}
+        </a>
+    </h3>
+    <p class="mt-2.5 line-clamp-3 flex-1 text-sm leading-relaxed text-slatey-500">
+        {{ article.description }}
+    </p>
+
+    <div class="mt-6 flex items-center gap-3 border-t border-slatey-100 pt-4">
+        <span class="flex h-8 w-8 items-center justify-center rounded-full bg-ink-950 text-[11px] font-semibold text-white">
+            {{ article.authorInitials }}
+        </span>
+        <div class="text-xs leading-tight">
+            <p class="font-medium text-ink-950">{{ article.author }}</p>
+            <p class="text-slatey-400">{{ article.date|date('M j, Y') }}</p>
+        </div>
+    </div>
+</div>
